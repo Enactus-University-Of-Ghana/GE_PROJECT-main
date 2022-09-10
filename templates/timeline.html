@@ -1,0 +1,41 @@
+{%extends './partials/base.html'%}
+{%block title%}
+        Home
+{%endblock%}
+{% load crispy_forms_tags %}
+{%block content%}
+<section>
+    <div class="col-xl-6">
+        <div class="card shadow">
+          <div class="card-header">
+            Graph
+          </div>
+          <div class="card-body">
+            <canvas id="gantt"></canvas >
+          </div>
+        </div>
+      </div>
+
+      <script src="frappe-gantt.min.js" >
+      var tasks = [
+      {
+      id: 'Task 1',
+      name: 'Redesign website',
+      start: '2016-12-28',
+      end: '2016-12-31',
+      progress: 20,
+      dependencies: 'Task 2, Task 3'
+      },
+      ...
+    ]
+    var gantt = new Gantt("#gantt", tasks);
+      
+      </script>
+</section>
+{%endblock%}
+
+
+
+
+
+

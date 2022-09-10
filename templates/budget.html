@@ -1,0 +1,63 @@
+{%extends './partials/base.html'%}
+{%block title%}
+        Home
+{%endblock%}
+{% load crispy_forms_tags %}
+{%block content%}
+<section>
+    <div class="card-header text-center fw-bolder">PROJECT LIST</div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Project</th>
+            <th scope="col">Budget</th>
+            <th scope="col">Cost</th>
+            <th scope="col">% Complete</th>
+    
+    
+          </tr>
+        </thead>
+        <tbody>
+        {%for p in pdata%}
+          <tr>
+            <th scope="row">{{p.id}}</th>
+            <td>{{p.project}}</td>
+            <td>{{p.budget}}</td>
+            <td>{{p.project_number}}</td>
+            <td>{{p.percentage}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    <div class="card-header text-center fw-bolder">TASK LIST</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Task</th>
+            <th scope="col">Project</th>
+            <th scope="col">Budget</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Risk</th>
+
+          </tr>
+        </thead>
+        <tbody>
+        {%for task in data%}
+          <tr>
+            <th scope="row">{{task.id}}</th>
+            <td>{{task.task}}</td>
+            <td>{{task.projects}}</td>
+            <td>{{task.budget}}</td>
+            <td>{{task.cost}}</td>
+            <td>{{task.risk}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+</section>
+{%endblock%}

@@ -1,0 +1,41 @@
+<div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="btn btn-dark btn-outline-white px-4 mx-3 my-3" data-bs-toggle="offcanvas" href="#offcanvas"><i class="bi bi-arrow-left"></i><h5>Menu</h5></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{%url 'taskapp-project'%}"><h5>Create Projects</h5></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{%url 'taskapp-index'%}"><h5>Create Tasks</h5></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{%url 'taskapp-about' %}">About</a>
+          </li>
+
+
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+
+    <div class="intro">
+        <h2><p style="color: aliceblue;" class="">Project Manager</p></h2>
+    </div>
+    <div class="offcanvas offcanvas-start show bg-secondary text-white" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasLabel">Menu</h5>
+      </div>
+      <a class="dropdown-item text-white fw-bolder" href="{%url 'taskapp-todo'%}"><i class="bi bi-person"></i>    Todo List</a>
+      <a class="dropdown-item text-white fw-bolder" href="{%url 'taskapp-budget'%}"><i class="bi bi-person"></i>    Budget</a>
+      <a class="dropdown-item text-white fw-bolder" href="{%url 'taskapp-risk'%}"><i class="bi bi-person"></i>    Risk</a>
+      <a class="dropdown-item text-white fw-bolder" href="{%url 'logout'%}">Logout</a>
+      <div class="offcanvas-body">
+      </div>
+    </div>
+</div>

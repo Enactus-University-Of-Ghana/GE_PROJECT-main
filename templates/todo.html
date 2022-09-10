@@ -1,0 +1,64 @@
+{%extends './partials/base.html'%}
+{%block title%}
+        Home
+{%endblock%}
+{% load crispy_forms_tags %}
+{%block content%}
+<section>
+  <div class="card-header text-center fw-bolder">PROJECT TABLE</div>
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Project</th>
+          <th scope="col">% Complete</th>
+  
+  
+        </tr>
+      </thead>
+      <tbody>
+      {%for p in pdata%}
+        <tr>
+          <th scope="row">{{p.id}}</th>
+          <td>{{p.project}}</td>
+          <td>{{p.percentage}}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+
+    <div class="card-header text-center fw-bolder">TASK TABLE</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Task</th>
+            <th scope="col">Project</th>
+            <th scope="col">Assigned date</th>
+            <th scope="col">Assigned to</th>
+            <th scope="col">Due date</th>
+            <th scope="col">status</th>
+            <th scope="col">piority</th>
+            <th scope="col">risk</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%for task in data%}
+          <tr>
+            <th scope="row">{{task.id}}</th>
+            <td>{{task.task}}</td>
+            <td>{{task.projects}}</td>
+            <td>{{task.date}}</td>
+            <td>{{task.assignee}}</td>
+            <td>{{task.duedate}}</td>
+            <td>{{task.status}}</td>
+            <td>{{task.piority}}</td>
+            <td>{{task.risk}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{%endblock%}
