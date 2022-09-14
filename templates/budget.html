@@ -5,8 +5,8 @@
 {% load crispy_forms_tags %}
 {%block content%}
 <section>
-    <div class="card-header text-center fw-bolder">PROJECT LIST</div>
-    <table class="table">
+    <div class="card-header text-center text-white fw-bolder bg-dark">PROJECT LIST</div>
+    <table id="table1" class="table">
         <thead>
           <tr>
             <th scope="col">id</th>
@@ -29,9 +29,10 @@
           </tr>
           {%endfor%}
         </tbody>
+        <button onclick="ExportToExcel('xlsx')">Export table to excel</button>
       </table>
-    <div class="card-header text-center fw-bolder">TASK LIST</div>
-      <table class="table">
+    <div class="card-header text-center text-white fw-bolder bg-dark">TASK LIST</div>
+      <table id="table" class="table">
         <thead>
           <tr>
             <th scope="col">id</th>
@@ -40,7 +41,6 @@
             <th scope="col">Budget</th>
             <th scope="col">Cost</th>
             <th scope="col">Risk</th>
-
           </tr>
         </thead>
         <tbody>
@@ -55,9 +55,26 @@
           </tr>
           {%endfor%}
         </tbody>
+        <button onclick="ExportToExcel('xlsx')">Export table to excel</button>
       </table>
     </div>
-    
   </div>
+  <script>
+    function ExportToExcel(type, fn, dl) {
+      var elt = document.getElementById('table');
+      var wb = XLSX.utils.table_to_book(elt, { sheet: "todo" });
+      return dl ?
+        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+        XLSX.writeFile(wb, fn || ('Task_budget.' + (type || 'xlsx')));
+   }
+  
+   function ExportToExcel1(type, fn, dl) {
+    var elt = document.getElementById('table1');
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "todo" });
+    return dl ?
+      XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+      XLSX.writeFile(wb, fn || ('Project_budget.' + (type || 'xlsx')));
+  }
+  </script>
 </section>
 {%endblock%}

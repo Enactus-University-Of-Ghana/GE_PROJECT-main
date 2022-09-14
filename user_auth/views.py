@@ -19,7 +19,6 @@ def register(response):
         if form.is_valid():
             form.save()
         return redirect('home')
-
     else:
         form=UserRegistrationForm
     return render(response,'signup.html',{'form':form})

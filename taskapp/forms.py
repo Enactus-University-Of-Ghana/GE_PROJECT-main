@@ -4,7 +4,7 @@ from pyexpat import model
 from django import forms
 from django.db import models
 
-from .models import TaskModel,report,ProjectModel
+from .models import TaskModel,report,ProjectModel,document
 
 work=ProjectModel.objects.all()
 a=(('',''),)
@@ -33,6 +33,14 @@ class reportform(forms.ModelForm):#for edit
     class Meta:
         model=report
         fields='__all__'
+        
+class fileform(forms.ModelForm):#for edit
+    
+    class Meta:
+        model=document
+        fields=['name','file']
+        widgets = {
+            "file":forms.FileInput(),}
 
 
 class ProjectForm(forms.ModelForm):#for edit

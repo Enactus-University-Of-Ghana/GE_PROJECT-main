@@ -65,7 +65,12 @@ class report(models.Model):
     date=models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.topic
-    
 
+class document(models.Model):
+    name=models.CharField(max_length=100)
+    date_added=models.DateTimeField(auto_now_add=True)
+    file=models.FileField()
+    def __str__(self):
+        return self.name
 
 

@@ -7,8 +7,8 @@
 <section>
     <div class="row">
         <div class="col-xl-6">
-        <div class="card-header text-center fw-bolder">RISK TABLE</div>
-      <table class="table">
+        <div class="card-header text-center text-white fw-bolder bg-dark">RISK TABLE</div>
+      <table id="table" class="table">
         <thead>
           <tr>
             <th scope="col">id</th>
@@ -31,6 +31,7 @@
           </tr>
           {%endfor%}
         </tbody>
+        <button onclick="ExportToExcel('xlsx')">Export table to excel</button>
       </table>
         </div>
         <div class="col-xl-6">
@@ -48,13 +49,14 @@
 
 
       <script>
+
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ['Low risk', 'Medium risk','High risks'],
                 datasets: [{
-                    label: '# Task graph',
+                    label: 'Risk graph',
                     data: [{{low_risk}},{{ med_risk }},{{ high_risk}}],
                     backgroundColor: [
     
@@ -79,6 +81,16 @@
                 }
             }
         });
-        </script>>
+
+        function ExportToExcel(type, fn, dl) {
+          var elt = document.getElementById('table');
+          var wb = XLSX.utils.table_to_book(elt, { sheet: "todo" });
+          return dl ?
+            XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+            XLSX.writeFile(wb, fn || ('Risk.' + (type || 'xlsx')));
+       }
+
+        </script>
+
 </section>
 {%endblock%}

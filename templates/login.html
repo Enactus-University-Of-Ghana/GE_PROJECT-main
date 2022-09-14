@@ -27,19 +27,37 @@
       </div>
     </div>
   </nav>
-<div style="background-color:#d9d9d9 ;" class="row ">
-    <div class="col-4"></div>
-    <div class="col my-3 py-3 px-3">
-        <div class="text-black">
+
+  <div class="container-fluid py-xl-5 ">
+    <div class="row"></div>
+      <div  class="row ">
+      <div class="col-3"></div>
+    <div class="col-6 my-3 py-5 px-5 bg-dark border-radius-lg rounded-3 shadow-lg">
+        <div class="text-white">
             {% load crispy_forms_tags %}
             <form method="POST">
                 {% csrf_token %}
                 {{form|crispy}}
-                <button class="btn btn-success" type="submit">Login</button>
+                <button class="btn btn-secondary my-3" type="submit">Login</button>
             </form>
         </div>
     </div>
-    <div class="col-4"></div>
+    <div class="col-3"></div>
 </div>
+<div class="row"></div>
+
+</div>
+<style>
+  .form-canvas{
+      background-color: gray;
+      border-radius: 10px;
+  }
+  body {
+    background-image: url("http://127.0.0.1:8000/media/istock-844535646.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+</style>
 
 {%endblock%}
+

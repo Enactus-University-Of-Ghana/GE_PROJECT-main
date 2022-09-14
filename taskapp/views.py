@@ -3,8 +3,8 @@ from pyexpat import model
 from django.forms import Form
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
-from . models import ProjectModel, TaskModel,report
-from . forms import TaskModelForm, TaskUpdateForm, reportform,ProjectForm
+from . models import ProjectModel, TaskModel,report,document
+from . forms import TaskModelForm, TaskUpdateForm, reportform,ProjectForm,fileform
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -30,9 +30,9 @@ def index(request):
     data=TaskModel.objects.all().order_by('piority')# the same as TaskModel.objects.raw('select * from "taskapp_Taskmodel" ')
 
     total_task=data.count()
-    completed_task=TaskModel.objects.filter(status='Complete').count()
-    pending_task=TaskModel.objects.filter(status='Pending').count()
-    cancelled_task=total_task-(completed_task+pending_task)
+    total_completed_task=TaskModel.objects.filter(status='Complete').count()
+    total_pending_task=TaskModel.objects.filter(status='Pending').count()
+    total_cancelled_task=total_task-(total_completed_task+total_pending_task)
     high_risk=TaskModel.objects.filter(piority='high').count()
     med_risk=TaskModel.objects.filter(piority='medium').count()
     low_risk=TaskModel.objects.filter(piority='low').count()
@@ -40,6 +40,24 @@ def index(request):
     
     total_budget=0
     total_cost=0
+    
+    for p in data:
+        t=TaskModel.objects.filter(projects=p.id)
+        total_budget=0
+        total_cost=0
+        percentage=0
+        completed_task=t.filter(status='Complete').count()
+        pending_task=t.filter(status='Pending').count()
+        if completed_task+pending_task==0:
+            percentage=0
+        else:
+            percentage=(completed_task/(completed_task+pending_task))*100
+        p.percentage=percentage
+        for task in t:
+            total_budget=total_budget+task.budget
+            total_cost=total_cost+task.cost
+        p.budget=total_budget
+        p.project_number=total_cost
     
 
     for task in amount:
@@ -57,12 +75,14 @@ def index(request):
         'total_task':total_task,
         'completed_task':completed_task,
         'pending_task':pending_task,
+        'total_completed_task':total_completed_task,
+        'total_pending_task':total_pending_task,
+
         'high_risk':high_risk,
         'medium_risk':med_risk,
         'low_risk':low_risk,
-        'cancelled_task':cancelled_task,
+        'total_cancelled_task':total_cancelled_task,
     }
-
     return render(request,"task.html",context)#loads the html file.passes in data from the modles file
 @login_required()
 def project(request):
@@ -83,6 +103,7 @@ def project(request):
 
     for p in data:
         t=TaskModel.objects.filter(projects=p.id)
+        task=TaskModel.objects.all()
         total_budget=0
         total_cost=0
         percentage=0
@@ -213,15 +234,24 @@ def delete_project(request,pk):
 def todo(request):
     data=TaskModel.objects.all().order_by('id')
     pdata=ProjectModel.objects.all().order_by('-date')
-    for p in data:
+    for p in pdata:
         t=TaskModel.objects.filter(projects=p.id)
         total_budget=0
         total_cost=0
+        percentage=0
+        completed_task=t.filter(status='Complete').count()
+        pending_task=t.filter(status='Pending').count()
+        if completed_task+pending_task==0:
+            percentage=0
+        else:
+            percentage=(completed_task/(completed_task+pending_task))*100
+        p.percentage=percentage
         for task in t:
             total_budget=total_budget+task.budget
             total_cost=total_cost+task.cost
         p.budget=total_budget
         p.project_number=total_cost
+
     context={
         'data':data,
         'pdata':pdata,
@@ -283,3 +313,44 @@ def logout_request(request):
     messages.info(request,"you are logged out")
     return redirect('login/')
 
+@login_required()
+def file(request):
+    data=document.objects.all()
+    if request.method=='POST':#if there is a request to post
+        form=fileform(request.POST,request.FILES)
+        if form.is_valid():#if it meets all contraints. mine worked without the brackets
+            form.save()
+            return redirect('/file')
+    else:
+        form=fileform()
+    
+    context={
+        'data':data,
+        'form':form,
+    }
+    return render(request,"file.html",context)
+
+@login_required()
+def edit_file(request,pk):
+    item=document.objects.get(id=pk)
+
+    if request.method=='POST':
+        form=fileform(request.POST,request.FILES,instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('/file')
+    else:
+        form=fileform(instance=item)
+        
+    context={
+        'form':form,
+    }
+    return render(request,"editfile.html",context)
+
+@login_required()
+def delete_file(request,pk):
+    item=ProjectModel.objects.get(id=pk)
+    if request.method=='POST':
+        item.delete()
+        return redirect('/project')
+    return render(request,"deletefile.html")

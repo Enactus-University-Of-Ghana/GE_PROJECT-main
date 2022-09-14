@@ -1,0 +1,50 @@
+{%extends './partials/base.html'%}
+{%block title%}
+{%endblock%}
+{% load crispy_forms_tags %}
+{%block content%}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card shadow">
+              <div class="card-header">
+                Upload a file
+              </div>
+              <div class="card-body">
+                <form class="d-grid" method="POST" enctype='multipart/form-data'>
+                  {% csrf_token %}
+                  {{form|crispy}}
+                  <input class="btn btn-success my-3 btn-sm" type="submit" value="Upload">
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="card shadow">
+              <div class="card-header">Files list</div>
+              <div class="card-body">
+                {%for file in data%}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-8">
+                      <strong>{{file.name}}</strong>
+                    </div>
+                    <div class="col-4">
+                      <a class="btn btn-secondary btn-sm mx-2 my-2" href="{{file.file.url}}">View file</a>
+                      <a class="btn btn-info btn-sm mx-2 my-2" href="{% url 'file-edit' file.id%}">Change</a>
+                      <a class="btn btn-danger btn-sm mx-2 my-2" href="{% url 'file-delete' file.id %}">Delete</a>
+                    </div>
+                  </div>
+                </li>
+                {%endfor%}
+              </div>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+</div>
+{%endblock%}
+
+<a href="{% url 'display' x.id%}" class="btn btn-primary">watch</a>
